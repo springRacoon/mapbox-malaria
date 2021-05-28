@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>MapBox测试</title>
+    <script src="/js/mapbox-gl.js" th:src="@{/js/mapbox-gl.js}"></script>
+    <script src="/js/mapbox-index.js" th:src="@{/js/mapbox-index.js}"></script>
+    <script src="/js/jquery.js" th:src="@{/js/jquery.js}"></script>
+    <link href="/css/mapbox-gl.css" th:href="@{/css/mapbox-gl.css}" rel="stylesheet" type="text/css"/>
+    <link href="/css/index.css" th:href="@{/css/index.css}" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+
+<div class="page-wrapper">
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <img class="sidebar-img" src="/img/hm-logo-color-white-text.svg"
+                 th:src="@{/img/hm-logo-color-white-text.svg}" alt="HealthMap"/>
+            <h1 class="sidebar-title">疟疾</h1>
+        </div>
+
+        <div class="reported-cases" th:onclick="toNation()">
+            <div id="total-cases" th:text="${totalNumber}"></div>
+            <div class="reported-cases-subtext">
+                <div class="reported-cases-label">Confirmed cases nationwide</div>
+                <div class="last-updated-date">Time <span id="last-updated-date">In 2012</span></div>
+            </div>
+        </div>
+
+        <ul id="location-list" class="list-reset">
+            <li th:each="c : ${illCases}">
+                <button th:onclick="toCity([[${c.lng}]],[[${c.lat}]]);">
+                    <span class="label" th:text="${c.pname}"></span>
+                    <span class="num" th:text="${c.number}"></span>
+                </button>
+            </li>
+        </ul>
+    </div>
+    <div class="map-wrapper">
+        <div id="map"></div>
+    </div>
+</div>
+
+
+<script type="text/javascript" src="/js/index.js" th:src="@{/js/index.js}"></script>
+</body>
+</html>

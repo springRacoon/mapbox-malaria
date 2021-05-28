@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sanguo.mapper.IllMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.sanguo.entity.po.Ill">
+        <id column="card_id" property="cardId"/>
+        <result column="card_number" property="cardNumber"/>
+        <result column="card_stu" property="cardStu"/>
+        <result column="gender" property="gender"/>
+        <result column="birthday" property="birthday"/>
+        <result column="age" property="age"/>
+        <result column="patient_company" property="patientCompany"/>
+        <result column="patient_of" property="patientOf"/>
+        <result column="now_stay_id" property="nowStayId"/>
+        <result column="now_stay_address" property="nowStayAddress"/>
+        <result column="occupation" property="occupation"/>
+        <result column="case_classification" property="caseClassification"/>
+        <result column="case_classification2" property="caseClassification2"/>
+        <result column="onset_time" property="onsetTime"/>
+        <result column="diagnosis_time" property="diagnosisTime"/>
+        <result column="dead_time" property="deadTime"/>
+        <result column="ill_name" property="illName"/>
+        <result column="before_ill_name" property="beforeIllName"/>
+        <result column="fill_card_time" property="fillCardTime"/>
+        <result column="report_area_id" property="reportAreaId"/>
+        <result column="report_company" property="reportCompany"/>
+        <result column="company_type" property="companyType"/>
+        <result column="card_input_time" property="cardInputTime"/>
+        <result column="card_input_people" property="cardInputPeople"/>
+        <result column="card_input_people_company" property="cardInputPeopleCompany"/>
+        <result column="county_audit_time" property="countyAuditTime"/>
+        <result column="city_audit_time" property="cityAuditTime"/>
+        <result column="province_audit_time" property="provinceAuditTime"/>
+        <result column="audit_stu" property="auditStu"/>
+        <result column="revised_reporting_time" property="revisedReportingTime"/>
+        <result column="revised_dead_time" property="revisedDeadTime"/>
+        <result column="last_dead_time" property="lastDeadTime"/>
+        <result column="revised_people" property="revisedPeople"/>
+        <result column="revised_people_company" property="revisedPeopleCompany"/>
+        <result column="delete_time" property="deleteTime"/>
+        <result column="delete_people" property="deletePeople"/>
+        <result column="delete_people_company" property="deletePeopleCompany"/>
+        <result column="delete_reason" property="deleteReason"/>
+        <result column="note" property="note"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        card_id,
+        card_number,
+        card_stu,
+        gender,
+        birthday,
+        age,
+        patient_company,
+        patient_of,
+        now_stay_id,
+        now_stay_address,
+        occupation,
+        case_classification,
+        case_classification2,
+        onset_time,
+        diagnosis_time,
+        dead_time,
+        ill_name,
+        before_ill_name,
+        fill_card_time,
+        report_area_id,
+        report_company,
+        company_type,
+        card_input_time,
+        card_input_people,
+        card_input_people_company,
+        county_audit_time,
+        city_audit_time,
+        province_audit_time,
+        audit_stu,
+        revised_reporting_time,
+        revised_dead_time,
+        last_dead_time,
+        revised_people,
+        revised_people_company,
+        delete_time,
+        delete_people,
+        delete_people_company,
+        delete_reason,
+        note
+    </sql>
+
+    <select id="getAllIllGeoJsonData" resultType="java.lang.String">
+        SELECT row_to_json(featurecollection) AS RESULT
+        FROM (
+                     SELECT 'FeatureCollection'                AS TYPE,
+                            array_to_json(ARRAY_AGG(features)) AS features
+                     FROM (
+                                  SELECT type,
+                                         geometry,
+                                         (SELECT row_to_json(TEMP)
+                                          FROM (SELECT card_id, now_stay_id, now_stay_address, onset_time) AS TEMP) AS properties
+                                  FROM (
+                                               SELECT 'Feature' AS TYPE,
+                                                      ST_AsGeoJSON(geometry) :: json AS geometry, card_id,
+                                                      now_stay_id,
+                                                      now_stay_address,
+                                                      onset_time
+                                               FROM china_xzqh,
+                                                    ill
+                                               WHERE china_xzqh.code = ill.now_stay_id
+                                               ) AS T
+                                  ) AS features
+                     ) AS featurecollection;
+    </select>
+
+    <select id="selectNumberGroupByPname" resultType="com.sanguo.entity.vo.IllCase">
+        SELECT
+                pname,
+                COUNT ( * ) AS number
+        FROM
+                ill,
+                china_xzqh
+        WHERE
+                ill.now_stay_id = china_xzqh.code
+        GROUP BY
+                pname
+        ORDER BY
+                number
+        DESC
+    </select>
+</mapper>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sanguo.mapper.ChinaXzqhMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.sanguo.entity.po.ChinaXzqh">
+    <result column="id" property="id" />
+        <result column="code" property="code" />
+        <result column="name" property="name" />
+        <result column="nameplus" property="nameplus" />
+        <result column="fullname" property="fullname" />
+        <result column="type" property="type" />
+        <result column="citycode" property="citycode" />
+        <result column="cityname" property="cityname" />
+        <result column="pcode" property="pcode" />
+        <result column="pname" property="pname" />
+        <result column="address" property="address" />
+        <result column="tel" property="tel" />
+        <result column="gd_jd" property="gdJd" />
+        <result column="gd_wd" property="gdWd" />
+        <result column="bd_jd" property="bdJd" />
+        <result column="bd_wd" property="bdWd" />
+        <result column="remark" property="remark" />
+        <result column="geometry" property="geometry" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        code, name, nameplus, fullname, type, citycode, cityname, pcode, pname, address, tel, gd_jd, gd_wd, bd_jd, bd_wd, remark, geometry
+    </sql>
+
+    <update id="doSome">
+        update china_xzqh set geometry = ST_GeomFromText('POINT Z(${jd} ${wd} 0)') where id = ${id}
+    </update>
+</mapper>
