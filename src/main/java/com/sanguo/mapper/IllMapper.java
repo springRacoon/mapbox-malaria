@@ -19,4 +19,6 @@ public interface IllMapper extends BaseMapper<Ill> {
     String getAllIllGeoJsonData();
 
     List<IllCase> selectNumberGroupByPname();
+
+    String[] selectDiffYears();
 }

@@ -22,11 +22,13 @@ public class MapBoxController {
 
 
     @RequestMapping("/mapbox")
-    public String hello(Model model) {
+    public String mapbox(Model model) {
         long totalNumber = illService.selectCount();
         List<IllCase> illCases = illService.selectNumberGroupByPname();
+        String[] years = illService.selectDiffYears();
         model.addAttribute("totalNumber", NumberFormatUtil.numberFormat(totalNumber));
         model.addAttribute("illCases", illCases);
+        model.addAttribute("years", years);
         return "index";
     }
 }

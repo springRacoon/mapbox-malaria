@@ -88,27 +88,27 @@
     </sql>
 
     <select id="getAllIllGeoJsonData" resultType="java.lang.String">
-        SELECT row_to_json(featurecollection) AS RESULT
-        FROM (
-                     SELECT 'FeatureCollection'                AS TYPE,
-                            array_to_json(ARRAY_AGG(features)) AS features
-                     FROM (
-                                  SELECT type,
-                                         geometry,
-                                         (SELECT row_to_json(TEMP)
-                                          FROM (SELECT card_id, now_stay_id, now_stay_address, onset_time) AS TEMP) AS properties
-                                  FROM (
-                                               SELECT 'Feature' AS TYPE,
-                                                      ST_AsGeoJSON(geometry) :: json AS geometry, card_id,
-                                                      now_stay_id,
-                                                      now_stay_address,
-                                                      onset_time
-                                               FROM china_xzqh,
-                                                    ill
-                                               WHERE china_xzqh.code = ill.now_stay_id
-                                               ) AS T
-                                  ) AS features
-                     ) AS featurecollection;
+        SELECT
+                row_to_json ( featurecollection ) AS RESULT
+        FROM
+                (SELECT 'FeatureCollection' AS TYPE,array_to_json ( ARRAY_AGG ( features ) ) AS features
+                 FROM
+                         (SELECT TYPE,geometry,( SELECT row_to_json ( TEMP ) FROM ( SELECT card_id, now_stay_id, now_stay_address, YEAR ) AS TEMP ) AS properties
+                          FROM
+                                  (SELECT 'Feature' AS TYPE,
+                                          ST_AsGeoJSON ( geometry ) :: json AS geometry,
+                                           card_id,
+                                          now_stay_id,
+                                          now_stay_address,
+                                          to_char( card_input_time, 'yyyy' ) AS YEAR
+                                   FROM
+                                           china_xzqh,
+                                           ill
+                                   WHERE
+                                           china_xzqh.code = ill.now_stay_id
+                                          ) AS T
+                                 ) AS features
+                        ) AS featurecollection;
     </select>
 
     <select id="selectNumberGroupByPname" resultType="com.sanguo.entity.vo.IllCase">
@@ -125,5 +125,9 @@
         ORDER BY
                 number
         DESC
+    </select>
+
+    <select id="selectDiffYears" resultType="java.lang.String">
+        SELECT to_char(card_input_time, 'yyyy') AS year from ill group by year ORDER BY year ASC
     </select>
 </mapper>

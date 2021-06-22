@@ -4,6 +4,8 @@ let bounds = [
     [141.231996, 54.285751]  // Northeast coordinates，东北坐标
 ];
 
+let timeControl = document.getElementById('slider');
+
 //天地图的token
 const tiandituToken = 'be51dd4a7507e1079f2e8bcd6030b479';
 const mapboxToken = 'pk.eyJ1IjoiemF4c2Nkd2MiLCJhIjoiY2tvMHh3YnhsMDM5NDJ2bzNnYWp4YWNqaSJ9.G1Dcdqhq0fwnGuXox_n3lA';
@@ -43,6 +45,29 @@ function addRasterTileLayer(map, url, sourceId, layerId) {
     });
 }
 
+function setTimeControlLabel(year) {
+    document.getElementById('year').innerText = years[year];
+}
+
+function buildTimeControl() {
+    document.getElementById('range-slider').style.display = 'flex';
+    timeControl.setAttribute('max', years.length - 1)
+    timeControl.setAttribute('value', years.length - 1);
+    setTimeControlLabel(years.length - 1);
+    showDataAtDate(years[years.length - 1])
+}
+
+function onAllDailySlicesFetched() {
+    buildTimeControl();
+}
+
+function showDataAtDate(year) {
+    var filters = ['==', 'year', year];
+    map.setFilter('ills-heat', filters);  /* setFilter(layer ,filter):设置layer的filter ，改变layer的数据值*/
+    map.setFilter('ills-point', filters)
+}
+
+
 map = new mapboxgl.Map({
     container: 'map',
     style: {//为map构造一个空的style
@@ -57,16 +82,13 @@ map = new mapboxgl.Map({
     maxBounds :bounds
 });
 
-// //设置中文
-// mapboxgl.setRTLTextPlugin('https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.10.1/mapbox-gl-rtl-text.js');
-// map.addControl(new MapboxLanguage({
-//     defaultLanguage: 'zh-Hans'
-// }));
-
-
 //加载时触发的函数
 map.on('load', function () {
-    // console.log(map)
+    timeControl.addEventListener('input', function() {
+        setTimeControlLabel(timeControl.value);
+        showDataAtDate(years[timeControl.value]);
+    });
+
     map.addSource('ills', {
         "type": "geojson",
         "data": "/ill/data"
@@ -194,6 +216,8 @@ map.on('load', function () {
     );
     //添加导航控件，控件的位置包括'top-left', 'top-right','bottom-left' ,'bottom-right'四种，默认为'top-right'
     map.addControl(nav, 'top-right');
+
+    onAllDailySlicesFetched();
 });
 
 

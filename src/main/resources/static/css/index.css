@@ -174,6 +174,82 @@ html, body {
 }
 
 
+#range-slider{
+    left: 21rem;
+    right: 1rem;
+    position: absolute;
+    padding: 0.25rem 0.5rem;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 0.8rem;
+    color: #fff;
+    line-height: 1;
+    border-radius: 0.2rem;
+    background-color: rgba(70, 70, 70, 0.8);
+    z-index: 3;
+    bottom: 2.75rem;
+}
+
+#spread {
+    padding: 0.2rem 0.75rem 0.2rem 0.5rem;
+    display: flex;
+    align-items: center;
+    color: #fff;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    background-color: #66cc66;
+    border-radius: 0.2rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+#spread img {
+    margin-right: 0.25rem;
+    width: 20px;
+    aspect-ratio: auto 20 / 20;
+    height: 20px;
+}
+
+#spread .spread-label {
+    display: inline;
+}
+
+input[type="range"] {
+    flex: 1;
+    margin: 0 0.5rem;
+    background: transparent;
+    -webkit-appearance: none;
+    cursor: ew-resize;
+}
+
+#range-slider label {
+    display: flex;
+    align-items: baseline;
+    font-size: 0.7rem;
+    color: #dedede;
+    line-height: 1rem;
+    text-transform: uppercase;
+    min-width: 4.5rem;
+}
+
+#range-slider label span {
+    display: inline-block;
+    flex: 1;
+    margin-left: 0.3rem;
+    font-weight: 600;
+    color: #fff;
+}
+
+#range-slider label span {
+    display: inline-block;
+    flex: 1;
+    margin-left: 0.3rem;
+    font-weight: 600;
+    color: #fff;
+}
+
+
+
 
 
 

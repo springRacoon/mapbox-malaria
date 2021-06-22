@@ -56,4 +56,9 @@ public class IllServiceImpl extends ServiceImpl<IllMapper, Ill> implements IllSe
         }).collect(Collectors.toList());
         return res;
     }
+
+    @Override
+    public String[] selectDiffYears() {
+        return illMapper.selectDiffYears();
+    }
 }

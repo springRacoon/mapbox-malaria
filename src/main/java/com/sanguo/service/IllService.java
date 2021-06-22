@@ -22,4 +22,6 @@ public interface IllService extends IService<Ill> {
     long selectCount();
 
     List<IllCase> selectNumberGroupByPname();
+
+    String[] selectDiffYears();
 }

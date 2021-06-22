@@ -38,11 +38,21 @@
         </ul>
     </div>
     <div class="map-wrapper">
+        <div id="range-slider" style="display: flex;">
+            <div id="spread"><img src="/img/play.svg" th:src="@{/img/play.svg}" width="20" height="20" alt="play"><span
+                    class="spread-label"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">play</font></font></span>
+            </div>
+            <input id="slider" type="range" value="10" min="0" max="10" step="1">
+            <label><span><font style="vertical-align: inherit;"><font id="year"
+                                                                      style="vertical-align: inherit;"> </font></font></span></label>
+        </div>
         <div id="map"></div>
     </div>
 </div>
 
-
+<script th:inline="javascript">
+    var years = [[${years}]]
+</script>
 <script type="text/javascript" src="/js/index.js" th:src="@{/js/index.js}"></script>
 </body>
 </html>

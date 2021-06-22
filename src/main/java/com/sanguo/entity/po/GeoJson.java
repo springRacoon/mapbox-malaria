@@ -46,7 +46,7 @@ public class GeoJson {
             private String card_id;
             private Integer now_stay_id;
             private String now_stay_address;
-            private Date onset_time;
+            private String year;
         }
 
         @NoArgsConstructor
