@@ -6,6 +6,7 @@ let bounds = [
 
 let timeControl = document.getElementById('slider');
 
+
 //天地图的token
 const tiandituToken = 'be51dd4a7507e1079f2e8bcd6030b479';
 const mapboxToken = 'pk.eyJ1IjoiemF4c2Nkd2MiLCJhIjoiY2tvMHh3YnhsMDM5NDJ2bzNnYWp4YWNqaSJ9.G1Dcdqhq0fwnGuXox_n3lA';
@@ -19,10 +20,7 @@ const cvawUrl = 'https://t3.tianditu.gov.cn/cva_w/wmts?' +
     'SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cva&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&' +
     'TILECOL={x}&TILEROW={y}&TILEMATRIX={z}&tk=' + tiandituToken;
 
-
-
 mapboxgl.accessToken = mapboxToken;
-
 
 
 /**
@@ -45,10 +43,17 @@ function addRasterTileLayer(map, url, sourceId, layerId) {
     });
 }
 
+/**
+ * 更改时间轴年份
+ * @param year 需要更改的年份
+ */
 function setTimeControlLabel(year) {
     document.getElementById('year').innerText = years[year];
 }
 
+/**
+ * 构建时间轴
+ */
 function buildTimeControl() {
     document.getElementById('range-slider').style.display = 'flex';
     timeControl.setAttribute('max', years.length - 1)
@@ -57,16 +62,40 @@ function buildTimeControl() {
     showDataAtDate(years[years.length - 1])
 }
 
-function onAllDailySlicesFetched() {
-    buildTimeControl();
-}
 
+/**
+ * 过滤数据
+ * @param year 显示年份
+ */
 function showDataAtDate(year) {
     var filters = ['==', 'year', year];
-    map.setFilter('ills-heat', filters);  /* setFilter(layer ,filter):设置layer的filter ，改变layer的数据值*/
+    map.setFilter('ills-heat', filters);
     map.setFilter('ills-point', filters)
 }
 
+/**
+ * 根据输入框查询
+ */
+function filterList() {
+    let filter = document.getElementById('location-filter').value
+    let list_items = document.getElementById('location-list').getElementsByTagName('li');
+    let clearFilter = document.getElementById('clear-filter');
+    for (let i = 0; i < list_items.length; ++i) {
+        let label = list_items[i].getElementsByClassName('label')[0];
+        let txtValue = label.textContent || label.innerText;
+        clearFilter.style.display = !!filter ? 'flex' : 'none';
+        const show = txtValue.indexOf(filter) != -1;
+        list_items[i].style.display = show ? 'list-item' : 'none';
+    }
+}
+
+/**
+ * 清空数据框
+ */
+function clearFilter() {
+    document.getElementById('location-filter').value = '';
+    filterList();
+}
 
 map = new mapboxgl.Map({
     container: 'map',
@@ -77,14 +106,14 @@ map = new mapboxgl.Map({
     },
     minZoom: 4,
     zoom: 5,
-    maxZoom:13,
+    maxZoom: 13,
     center: [104.06, 30.67],
-    maxBounds :bounds
+    maxBounds: bounds
 });
 
 //加载时触发的函数
 map.on('load', function () {
-    timeControl.addEventListener('input', function() {
+    timeControl.addEventListener('input', function () {
         setTimeControlLabel(timeControl.value);
         showDataAtDate(years[timeControl.value]);
     });
@@ -217,19 +246,26 @@ map.on('load', function () {
     //添加导航控件，控件的位置包括'top-left', 'top-right','bottom-left' ,'bottom-right'四种，默认为'top-right'
     map.addControl(nav, 'top-right');
 
-    onAllDailySlicesFetched();
+    buildTimeControl();
 });
 
 
-
-function toCity(lng,lat){
+/**
+ * 跳转城市坐标
+ * @param lng 经度
+ * @param lat 纬度
+ */
+function toCity(lng, lat) {
     map.flyTo({
-        center:[lng, lat],
+        center: [lng, lat],
         zoom: 8
     })
 }
 
-function toNation(){
+/**
+ * 跳转至地图中心
+ */
+function toNation() {
     map.flyTo({
         center: [104.06, 30.67],
         zoom: 5

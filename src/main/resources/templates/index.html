@@ -24,8 +24,13 @@
             <div id="total-cases" th:text="${totalNumber}"></div>
             <div class="reported-cases-subtext">
                 <div class="reported-cases-label">Confirmed cases nationwide</div>
-                <div class="last-updated-date">Time <span id="last-updated-date">In 2012</span></div>
+                <div class="last-updated-date">Time <span id="last-updated-date"></span></div>
             </div>
+        </div>
+
+        <div class="location-filter-wrapper">
+            <input type="text" id="location-filter" name="location-filter" onkeyup="filterList()" placeholder="筛选省份">
+            <div id="clear-filter" onclick="clearFilter()" style="display: none;"><img id="clearProvince" th:src="@{/img/close-icon.svg}" src="img/close-icon.svg" width="12" height="12" alt="清除"></div>
         </div>
 
         <ul id="location-list" class="list-reset">
@@ -51,7 +56,8 @@
 </div>
 
 <script th:inline="javascript">
-    var years = [[${years}]]
+    let years = [[${years}]]
+    $("#last-updated-date").html("In "+years[years.length-1]);
 </script>
 <script type="text/javascript" src="/js/index.js" th:src="@{/js/index.js}"></script>
 </body>

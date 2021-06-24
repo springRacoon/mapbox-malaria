@@ -38,7 +38,7 @@ html, body {
 }
 
 .sidebar {
-    width: 15rem;
+    width: 20rem;
     padding: 1.25rem 1.25rem 0 1.25rem;
     position: fixed;
     flex-direction: column;
@@ -175,7 +175,7 @@ html, body {
 
 
 #range-slider{
-    left: 21rem;
+    left: 25rem;
     right: 1rem;
     position: absolute;
     padding: 0.25rem 0.5rem;
@@ -217,9 +217,9 @@ html, body {
 input[type="range"] {
     flex: 1;
     margin: 0 0.5rem;
-    background: transparent;
     -webkit-appearance: none;
     cursor: ew-resize;
+    height: 0.1rem;
 }
 
 #range-slider label {
@@ -246,6 +246,44 @@ input[type="range"] {
     margin-left: 0.3rem;
     font-weight: 600;
     color: #fff;
+}
+
+
+.location-filter-wrapper {
+    padding: 1rem 0;
+    position: relative;
+    width: 100%;
+    border-bottom: 1px solid #666;
+}
+
+#location-filter{
+    font-size: 0.9rem;
+    width: 90%;
+    padding: 0.5rem 1rem;
+    font-family: inherit;
+    color: #ccc;
+    background-color: rgba(48, 48, 48, 0.85);
+    border-radius: 0.2rem;
+    border: 1px solid #666;
+}
+
+#clear-filter {
+    display: none;
+    position: absolute;
+    top: 50%;
+    right: 0.75rem;
+    transform: translateY(-50%);
+    align-items: center;
+    justify-content: center;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#clearProvince{
+    width: 12px;
+    aspect-ratio: auto 12 / 12;
+    height: 12px;
 }
 
 
