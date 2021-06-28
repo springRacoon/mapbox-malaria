@@ -8,9 +8,9 @@ spring:
     suffix: .html  #后缀名
 
   datasource:
-    url: jdbc:postgresql://10.211.55.4:5432/ill?useSSL=false
+    url: jdbc:postgresql://152.136.96.26:5432/ill?useSSL=false
     username: postgres
-    password: postgres
+    password: misakimei
     driver-class-name: org.postgresql.Driver
 
   jackson:
@@ -22,3 +22,6 @@ spring:
 mybatis-plus:
   type-aliases-package: com.sanguo.mapper
   mapper-locations: classpath*:/mapper/**/*.xml
+
+server:
+  port: 8081

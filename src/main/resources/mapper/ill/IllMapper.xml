@@ -103,9 +103,9 @@
                                           to_char( card_input_time, 'yyyy' ) AS YEAR
                                    FROM
                                            china_xzqh,
-                                           ill
+                                           ill_demo
                                    WHERE
-                                           china_xzqh.code = ill.now_stay_id
+                                           china_xzqh.code = ill_demo.now_stay_id
                                           ) AS T
                                  ) AS features
                         ) AS featurecollection;
@@ -116,10 +116,10 @@
                 pname,
                 COUNT ( * ) AS number
         FROM
-                ill,
+                ill_demo,
                 china_xzqh
         WHERE
-                ill.now_stay_id = china_xzqh.code
+                ill_demo.now_stay_id = china_xzqh.code
         GROUP BY
                 pname
         ORDER BY
@@ -128,6 +128,6 @@
     </select>
 
     <select id="selectDiffYears" resultType="java.lang.String">
-        SELECT to_char(card_input_time, 'yyyy') AS year from ill group by year ORDER BY year ASC
+        SELECT to_char(card_input_time, 'yyyy') AS year from ill_demo group by year ORDER BY year ASC
     </select>
 </mapper>
